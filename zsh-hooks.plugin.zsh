@@ -91,9 +91,15 @@ hooks-add-hook(){
 }
 
 hooks-run-hook(){
+  local cancelled=0
   for f in ${(P)1}; do
     $f
+    if [[ $? -ne 0 ]]; then
+      cancelled=1
+      break
+    fi
   done
+  return $cancelled
 }
 
 hooks-define-hook(){
